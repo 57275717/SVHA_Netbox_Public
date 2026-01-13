@@ -1,0 +1,42 @@
+{% extends 'extras/script/base.html' %}
+{% load helpers %}
+{% load form_helpers %}
+{% load log_levels %}
+{% load i18n %}
+
+{% block content %}
+  <div class="row">
+    <div class="col">
+      {% if not perms.extras.run_script %}
+        <div class="alert alert-warning">
+          <i class="mdi mdi-alert"></i>
+          {% trans "You do not have permission to run scripts" %}.
+        </div>
+      {% endif %}
+      <form action="" method="post" enctype="multipart/form-data" class="form form-object-edit">
+        {% csrf_token %}
+        <div class="field-group my-4">
+          {# Render grouped fields according to declared fieldsets #}
+          {% for group, fields in script.get_fieldsets %}
+            {% if fields %}
+              <div class="field-group mb-5">
+                <div class="row mb-2">
+                  <h5 class="offset-sm-3">{{ group }}</h5>
+                </div>
+                {% for name in fields %}
+                  {% with field=form|getfield:name %}
+                    {% render_field field %}
+                  {% endwith %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="float-end">
+          <a href="{% url 'extras:script_list' %}" class="btn btn-outline-danger">{% trans "Cancel" %}</a>
+          <button type="submit" name="_run" class="btn btn-primary"{% if not perms.extras.run_script %} disabled="disabled"{% endif %}><i class="mdi mdi-play"></i> {% trans "Run Script" %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
