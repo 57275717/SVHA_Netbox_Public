@@ -66,7 +66,7 @@ Clone this repository to the `/opt` directory (standard for production apps).
 
 ```bash
 cd /opt
-sudo git clone https://github.com/57275717/SVHA_Netbox.git netbox
+sudo git clone https://github.com/57275717/SVHA_Netbox_Public.git netbox
 cd netbox
 ```
 
